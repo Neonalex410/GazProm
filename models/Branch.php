@@ -12,4 +12,13 @@ class Branch extends ActiveRecord
     {
         return 'branch';
     }
+
+    public function getArray(){
+        $branch = Branch::find()->all();
+        $array = [];
+        foreach ($branch as $el){
+            $array[$el->id] = $el->address;
+        }
+        return $array;
+    }
 }

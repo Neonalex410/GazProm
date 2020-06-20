@@ -1,0 +1,104 @@
+@font-face {
+    font-family: Regular;
+    src: url(../fonts/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: Medium;
+    src: url(../fonts/Roboto-Medium.ttf);
+}
+
+@font-face {
+    font-family: Thin;
+    src: url(../fonts/Roboto-Thin.ttf);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Regular;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    width: 100vw;
+    height: 10vh;
+    background-color: #fff;
+    box-shadow: 0 0 30px gray;
+}
+
+.header > img {
+    height: 80%;
+    margin: 0 20px;
+}
+
+.log-in {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10vh;
+    width: 18vw;
+    height: 50vh;
+    margin: 15vh auto;
+    box-shadow: 0 0 20px gray;
+}
+
+.log-in > img {
+    width: 80px;
+}
+
+.input-box {
+    margin: 5px;
+}
+
+.input-box > p {
+    margin: 5px 0;
+}
+
+.input-box > input {
+    height: 25px;
+    font-size: 1.1em;
+    border-radius: 2px;
+    outline: none;
+    border: 1px solid #000;
+}
+
+.remember {
+    margin: 20px 0;
+}
+
+.log-in > button {
+    width: 140px;
+    height: 35px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: 0;
+    background-color: #0066cb;
+    color: #fff;
+    border-radius: 2px;
+}
+
+.log-in > button:hover {
+    background-color: #0059b1;
+    cursor: pointer;
+}
+
+.log-in > hr {
+    width: 80%;
+    height: 1px;
+    border: 0;
+    background-color: gray;
+    margin: 20px 0 15px 0;
+}
+
+.log-in > span {
+    margin: 2px 0;
+    cursor: pointer;
+    transition: color .4s;
+}
+
+.log-in > span:hover {
+    color: #0066cb;
+}

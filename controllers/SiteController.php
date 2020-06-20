@@ -2,7 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\Branch;
+use app\models\ProfileForm;
 use app\models\RegistrationForm;
+use app\models\SentenceForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -95,5 +98,40 @@ class SiteController extends Controller
    public function actionLogout(){
         Yii::$app->user->logout();
         $this->goHome();
+   }
+
+   public function actionProfile(){
+        return $this->render('profile');
+   }
+
+   public function actionProfileUpdate($id){
+        $profile_model = new ProfileForm();
+        $branch = new Branch();
+        $array_branch = $branch->getArray();
+        if ($profile_model->load(Yii::$app->request->post())){
+            $profile_model->saveImage();
+            if ($profile_model->validate()){
+                $profile_model->updateProfile($id);
+                $this->redirect('profile');
+            }
+        }
+        return $this->render('profile-update', [
+            'profile_model' => $profile_model,
+            'array_branch' => $array_branch,
+        ]);
+   }
+
+   public function actionSentenceCreate($id){
+        $sentence_model = new SentenceForm();
+
+        if ($sentence_model->load(Yii::$app->request->post())){
+            $sentence_model->secondaryField();
+            if ($sentence_model->validate()){
+                $sentence_model->saveSentence();
+            }
+        }
+        return $this->render('sentence-create', [
+            'sentence_model' => $sentence_model,
+        ]);
    }
 }
