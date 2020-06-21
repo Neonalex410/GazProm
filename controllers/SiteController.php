@@ -5,17 +5,20 @@ namespace app\controllers;
 use app\models\Branch;
 use app\models\ProfileForm;
 use app\models\RegistrationForm;
+use app\models\Sentence;
 use app\models\SentenceForm;
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+
+    public $layout = 'default';
     /**
      * {@inheritdoc}
      */
@@ -63,9 +66,38 @@ class SiteController extends Controller
      *
      * @return string
      */
+    public function actionLogin(){
+        $login_model = new LoginForm();
+        if (Yii::$app->user->isGuest){
+            if($login_model->load(Yii::$app->request->post()) && $login_model->validate()){
+                Yii::$app->user->login($login_model->getUser(), 3600*24*30);
+                $this->goHome();
+            }
+        }
+        return $this->render('login', [
+            'login_model' => $login_model,
+        ]);
+    }
+
+    public function actionLogout(){
+        Yii::$app->user->logout();
+        $this->redirect('login');
+    }
+
+
     public function actionIndex()
     {
-        return $this->render('index');
+        if (!Yii::$app->user->isGuest){
+            $user = User::find()->all();
+            $sentence = Sentence::find()->all();
+        }else{
+            $this->redirect('login');
+        }
+        return $this->render('index',[
+            'user' => $user,
+            'sentence' => $sentence,
+        ]);
+
     }
 
    public function actionRegistration(){
@@ -82,38 +114,31 @@ class SiteController extends Controller
         ]);
    }
 
-   public function actionLogin(){
-        $login_model = new LoginForm();
-       if (Yii::$app->user->isGuest){
-           if($login_model->load(Yii::$app->request->post()) && $login_model->validate()){
-               Yii::$app->user->login($login_model->getUser(), 3600*24*30);
-               $this->goHome();
-           }
-       }
-        return $this->render('login', [
-            'login_model' => $login_model,
-        ]);
-   }
-
-   public function actionLogout(){
-        Yii::$app->user->logout();
-        $this->goHome();
-   }
-
    public function actionProfile(){
-        return $this->render('profile');
+        if (!Yii::$app->user->isGuest){
+            $user = User::findOne(Yii::$app->user->getId());
+        }else{
+            $this->redirect('login');
+        }
+       return $this->render('profile', [
+           'user' => $user,
+       ]);
    }
 
    public function actionProfileUpdate($id){
-        $profile_model = new ProfileForm();
-        $branch = new Branch();
-        $array_branch = $branch->getArray();
-        if ($profile_model->load(Yii::$app->request->post())){
-            $profile_model->saveImage();
-            if ($profile_model->validate()){
-                $profile_model->updateProfile($id);
-                $this->redirect('profile');
+        if (!Yii::$app->user->isGuest){
+            $profile_model = new ProfileForm();
+            $branch = new Branch();
+            $array_branch = $branch->getArray();
+            if ($profile_model->load(Yii::$app->request->post())){
+                $profile_model->saveImage();
+                if ($profile_model->validate()){
+                    $profile_model->updateProfile($id);
+                    $this->redirect('profile');
+                }
             }
+        }else{
+            $this->redirect('login');
         }
         return $this->render('profile-update', [
             'profile_model' => $profile_model,
@@ -122,16 +147,27 @@ class SiteController extends Controller
    }
 
    public function actionSentenceCreate($id){
-        $sentence_model = new SentenceForm();
-
-        if ($sentence_model->load(Yii::$app->request->post())){
-            $sentence_model->secondaryField();
-            if ($sentence_model->validate()){
-                $sentence_model->saveSentence();
-            }
+        if (!Yii::$app->user->isGuest){
+            $sentence_model = new SentenceForm();
+               if ($sentence_model->load(Yii::$app->request->post())){
+                   $sentence_model->secondaryField();
+                   if ($sentence_model->validate()){
+                       $sentence_model->saveSentence();
+                       $this->redirect('index');
+                   }
+                }
+        }else{
+            $this->redirect('login');
         }
         return $this->render('sentence-create', [
             'sentence_model' => $sentence_model,
+        ]);
+   }
+
+   public function actionWatchSentence($id){
+        $sentence = Sentence::findOne($id);
+        return $this->render('watch-sentence', [
+            'sentence' => $sentence,
         ]);
    }
 }

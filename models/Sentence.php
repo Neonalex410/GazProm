@@ -12,4 +12,9 @@ class Sentence extends ActiveRecord
     {
         return 'sentence';
     }
+
+    public function getName($id){
+        $user = User::findOne($id);
+        return $user->name;
+    }
 }

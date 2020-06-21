@@ -1,53 +1,68 @@
-<?php
+<div class="main">
+    <div class="content">
 
-/* @var $this yii\web\View */
+        <h1>Все предложения</h1>
 
-$this->title = 'My Yii Application';
-?>
-<div class="site-index">
+        <div class="type">
+            <h2>Общий</h2>
+            <h2>Филиал </h2>
+        </div>
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <div class="hr"></div>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
-    <div class="body-content">
-
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+        <div class="filters">
+            <div class="filter">
+                <div>Всё</div>
+                <div>Лучшее</div>
             </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            <div class="filter">
+                <div>Неделя</div>
+                <div>Месяц</div>
+                <div>Год</div>
             </div>
         </div>
 
+        <?php
+
+        use yii\helpers\Html;
+        use yii\helpers\Url;
+
+        foreach ($sentence as $el){
+                ?>
+                <div class="post">
+                    <div class="post-header">
+                        <img src="" alt="">
+                        <h3><?= $el->getName($el->id_user) ?></h3>
+                    </div>
+                    <h2><?= Html::a($el->title, Url::toRoute(['watch-sentence', 'id' => $el->id])) ?></h2>
+                    <div class="hashtag">#жарко #кофе</div>
+                    <p><?= $el->text ?></p>
+                    <div class="post-footer">
+                        <img src="../web/img/fire.png" alt="">
+                        <span><?= $el->agree ?></span>
+                        <span>Опубликовано <?= $el->date ?></span>
+                    </div>
+                </div>
+                <?php
+            }
+        ?>
     </div>
+
+    <div class="best">
+        <h2>Лучшие пользователи</h2>
+        <?php
+        $count = 0;
+            foreach ($user as $el){
+                $count++;
+                ?>
+                <div>
+                    <h5><?= '№' . $count . ' - ' . $el->username ?></h5>
+                </div>
+                <?php
+            }
+        ?>
+    </div>
+
 </div>
+
+<script src="./js/main.js"></script>

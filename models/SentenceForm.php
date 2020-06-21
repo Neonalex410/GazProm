@@ -21,7 +21,7 @@ class SentenceForm extends Model
     {
         return [
             [['id_user', 'title', 'text', 'agree', 'dislike', 'date', 'status'], 'required'],
-            ['date','date','format' => 'php:d-m-Y'],
+            ['date','date','format' => 'php:d.m.Y'],
         ];
     }
 
@@ -37,7 +37,7 @@ class SentenceForm extends Model
         $this->id_user = Yii::$app->user->getId();
         $this->agree = 0;
         $this->dislike = 0;
-        $this->date = date('d-m-Y');
+        $this->date = date('d.m.Y');
         $this->status = 'active';
     }
 

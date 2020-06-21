@@ -38,4 +38,8 @@ class User extends ActiveRecord implements IdentityInterface
         // TODO: Implement validateAuthKey() method.
     }
 
+    public function getTitleBranch($id){
+        $branch = Branch::findOne($id);
+        return $branch->address;
+    }
 }
